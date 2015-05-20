@@ -19,18 +19,28 @@
 'use strict';
 
 const Glib = imports.gi.GLib;
+const Meta = imports.gi.Meta;
 const display = global.screen.get_display();
 
 let windowCreatedId = 0;
 
-function enable() {
-  windowCreatedId = display.connect_after('window-created', function (ignored, window) {
-    if (!window.skip_taskbar) {
-      let xid = guessWindowXID(window);
-      if (xid) {
-        Glib.spawn_command_line_sync('xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id ' + xid);
-      }
+function setDarkTheme(window) {
+  if (!window.skip_taskbar) {
+    let xid = guessWindowXID(window);
+    if (xid) {
+      Glib.spawn_command_line_sync('xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id ' + xid);
     }
+  }
+}
+
+function enable() {
+  // set for any existing windows and all future windows
+  let workspace = global.screen.get_active_workspace();
+  for (window in Meta.get_window_actors(global.screen)) {
+    setDarkTheme(window);
+  }
+  windowCreatedId = display.connect_after('window-created', function (ignored, window) {
+    setDarkTheme(window);
   });
 }
 
