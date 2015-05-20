@@ -19,35 +19,38 @@
 'use strict';
 
 const Glib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+
 const display = global.screen.get_display();
 
-let windowCreatedId = 0;
+let listener = null;
 
-function setDarkTheme(window) {
-  if (!window.skip_taskbar) {
-    let xid = guessWindowXID(window);
-    if (xid) {
-      Glib.spawn_command_line_sync('xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id ' + xid);
-    }
+function setDarkTheme(win) {
+  let xid = !(win.skip_taskbar) && guessWindowXID(win);
+  if (xid) {
+    Glib.spawn_command_line_sync('xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id ' + xid);
   }
 }
 
 function enable() {
-  // set for any existing windows and all future windows
-  let workspace = global.screen.get_active_workspace();
-  for (window in Meta.get_window_actors(global.screen)) {
-    setDarkTheme(window);
-  }
-  windowCreatedId = display.connect_after('window-created', function (ignored, window) {
-    setDarkTheme(window);
+  // set for any existing windows
+  Shell.AppSystem.get_default().get_running()
+    .forEach(function (app) {
+      app.get_windows().forEach(function (win) {
+        setDarkTheme(win);
+      });
+    });
+
+  // ... and all future windows
+  listener = display.connect_after('window-created', function (_, win) {
+    setDarkTheme(win);
   });
 }
 
 function disable() {
-  if (windowCreatedId) {
-    display.disconnect(windowCreatedId);
-    windowCreatedId = 0;
+  if (listener) {
+    display.disconnect(listener);
+    listener = null;
   }
 }
 
