@@ -3,7 +3,7 @@
   "uuid": "pitch-dark@patrick.gaubatz.at",
   "name": "Pitch-Dark",
   "description": "Pitch-Dark is an extension that forces all application windows to use the dark GTK theme variant.",
-  "shell-version": [ "3.12", "3.14" ],
+  "shell-version": [ "3.12", "3.14", "3.16" ],
   "original-authors": [ "patrick@gaubatz.at" ],
   "url": "https://github.com/pgaubatz/gnome-shell-extension-pitch-dark"
 }
