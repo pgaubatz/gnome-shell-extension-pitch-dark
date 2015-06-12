@@ -10,6 +10,8 @@ The only prerequisite is the `xprop` utility which can easily be installed using
 - Fedora: `yum install xorg-x11-utils`
 - Arch: `pacman -S xorg-xprop`
 
+You may also want to install the [Adwaita-dark-gtk2](https://github.com/axxapy/Adwaita-dark-gtk2) theme that provides a dark variant for Gtk2 applications. 
+
 Before
 ------
 
