@@ -3,6 +3,13 @@ Pitch-Dark
 
 Pitch-Dark is GNOME Shell extension that forces all application windows to use the [dark GTK theme variant](https://developer.gnome.org/gtk3/3.0/GtkSettings.html#GtkSettings--gtk-application-prefer-dark-theme).
 
+The most convenient way of installing this extension is using [extensions.gnome.org](https://extensions.gnome.org/extension/957/pitch-dark/).
+
+The only prerequisite is the `xprop` utility which can easily be installed using:
+- Debian/Ubuntu: `apt-get install x11-utils`
+- Fedora: `yum install xorg-x11-utils`
+- Arch: `pacman -S xorg-xprop`
+
 Before
 ------
 
